@@ -1,0 +1,11 @@
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {Toaster} from 'sonner';
+import {welfareApi} from '../../src/api/welfare';
+import NewsRecordRetentionSettings from '../../src/components/NewsRecordRetentionSettings';
+import '../../src/index.css';
+globalThis.__retention={reads:0,writes:[],unexpected:[]};
+for(const key of Object.keys(welfareApi))if(typeof welfareApi[key]==='function')welfareApi[key]=async()=>{globalThis.__retention.unexpected.push(key);throw Error('합성시험: 실제API차단 '+key);};
+welfareApi.getNewsRecordRetention=async()=>{globalThis.__retention.reads++;return {days:0};};
+welfareApi.saveNewsRecordRetention=async days=>{globalThis.__retention.writes.push(days);return {days,cleanup_failed:false};};
+createRoot(document.getElementById('root')).render(<main className="mx-auto max-w-3xl p-6"><NewsRecordRetentionSettings/><Toaster/></main>);

@@ -1,0 +1,30 @@
+playwright>=1.40.0
+plyer>=2.1.0
+beautifulsoup4>=4.12.2
+python-dotenv>=1.0.0
+# 재시도 기본값과 오류 구조가 버전마다 달라지면 전역 AI 대기열의 호출 계산이 흔들린다.
+# 현재 전체 회귀 테스트와 배포 빌드에서 확인한 버전으로 고정한다.
+google-genai==1.62.0
+aiohttp>=3.9.0
+openpyxl>=3.1.0
+fastapi>=0.109.0
+uvicorn>=0.27.0
+h11>=0.16.0,<1
+python-multipart>=0.0.6
+pandas>=2.1.0
+numpy>=1.26.0
+# 텍스트형 PDF는 Gemini OCR 전에 로컬에서 읽어 무료 API 호출량을 줄인다.
+# 배포 빌드와 개발 환경의 추출 차이를 막기 위해 검증한 버전으로 고정한다.
+pypdf==6.16.2
+# Local HWP and Korean OCR. Models are pinned and bundled; no runtime downloads.
+olefile==0.47
+pypdfium2==5.13.0
+Pillow==12.1.0
+rapidocr==3.9.2
+omegaconf==2.3.0
+antlr4-python3-runtime==4.9.3
+onnxruntime==1.30.0
+pyclipper==1.4.0
+shapely==2.1.2
+opencv-python==5.0.0.93
+apscheduler>=3.10.0

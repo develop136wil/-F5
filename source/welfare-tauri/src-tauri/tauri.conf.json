@@ -1,0 +1,63 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "복지F5",
+  "version": "3.0.13",
+  "identifier": "com.searchmaster.welfare",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "복지F5 - 복지정보를 새로고침하다",
+        "width": 900,
+        "height": 700,
+        "minWidth": 850,
+        "minHeight": 650,
+        "resizable": true,
+        "fullscreen": false,
+        "decorations": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://127.0.0.1:8421 http://localhost:8421; img-src 'self' data: https:; media-src 'self' https://videos.ctfassets.net; style-src 'self' 'unsafe-inline';",
+      "capabilities": [
+        "default",
+        "shell-allow-sidecar",
+        "http-capability"
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "externalBin": [
+      "api-server"
+    ],
+    "resources": {
+      "icons/icon.ico": "welfareF5.ico"
+    },
+    "windows": {
+      "nsis": {
+        "template": "./installer-template.nsi",
+        "languages": ["Korean"],
+        "displayLanguageSelector": false,
+        "installerHooks": "./installer-hooks.nsh"
+      }
+    }
+  }
+}

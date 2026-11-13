@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "scope": "Six components with missing notices confirmed in the 2026-09-18 backend audit; not a complete dependency or compliance inventory.",
+  "files": [
+    {"distribution":"onnxruntime","version":"1.30.0","source":"onnxruntime/LICENSE","origin":"wheel","size_bytes":1094,"sha256":"c250d6278f0b47a6439fb7592b08b58a55eb9f535aa49a1db63211c3f982b674","target":"assets/licenses/onnxruntime-1.30.0/LICENSE"},
+    {"distribution":"onnxruntime","version":"1.30.0","source":"onnxruntime/ThirdPartyNotices.txt","origin":"wheel","size_bytes":344457,"sha256":"c53a76501ef60db6f865f20599f220761201ac4057683acefdab37d861b86622","target":"assets/licenses/onnxruntime-1.30.0/ThirdPartyNotices.txt"},
+    {"distribution":"pandas","version":"2.3.3","source":"pandas-2.3.3.dist-info/LICENSE","origin":"wheel","size_bytes":1634,"sha256":"533eb6d0b98e5be3ddd12dce97be35dd11282f5c47cdf8d08c81756fd5d70a26","target":"assets/licenses/pandas-2.3.3/LICENSE"},
+    {"distribution":"pypdf","version":"6.16.2","source":"pypdf-6.16.2.dist-info/licenses/LICENSE","origin":"wheel","size_bytes":1605,"sha256":"a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524","target":"assets/licenses/pypdf-6.16.2/LICENSE"},
+    {"distribution":"fastapi","version":"0.128.7","source":"fastapi-0.128.7.dist-info/licenses/LICENSE","origin":"wheel","size_bytes":1086,"sha256":"4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e","target":"assets/licenses/fastapi-0.128.7/LICENSE"},
+    {"distribution":"PyYAML","version":"6.0.3","source":"pyyaml-6.0.3.dist-info/licenses/LICENSE","origin":"wheel","size_bytes":1101,"sha256":"8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4","target":"assets/licenses/PyYAML-6.0.3/LICENSE"},
+    {"distribution":"antlr4-python3-runtime","version":"4.9.3","source":"antlr4-python3-runtime-4.9.3/LICENSE.txt","origin":"pinned-upstream","upstream":"https://raw.githubusercontent.com/antlr/antlr4/4.9.3/LICENSE.txt","size_bytes":2699,"sha256":"b1b379fcaf3219593a4c433feb1b35c780bed23fafaae440b1ae2771a9521e3a","target":"assets/licenses/antlr4-python3-runtime-4.9.3/LICENSE.txt"}
+  ]
+}

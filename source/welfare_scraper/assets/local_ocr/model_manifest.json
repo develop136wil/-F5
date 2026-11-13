@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "rapidocr_version": "3.9.2",
+  "onnxruntime_version": "1.30.0",
+  "language": "korean",
+  "license": "Apache-2.0",
+  "runtime_downloads": false,
+  "source_manifest": "https://raw.githubusercontent.com/RapidAI/RapidOCR/v3.9.2/python/rapidocr/default_models.yaml",
+  "models": [
+    {"role":"detector","filename":"ch_PP-OCRv5_det_mobile.onnx","url":"https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx","size_bytes":4819576,"sha256":"4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae"},
+    {"role":"orientation_classifier","filename":"ch_ppocr_mobile_v2.0_cls_mobile.onnx","url":"https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx","size_bytes":585532,"sha256":"e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c"},
+    {"role":"korean_recognizer","filename":"korean_PP-OCRv5_rec_mobile.onnx","url":"https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/korean_PP-OCRv5_rec_mobile.onnx","size_bytes":13488748,"sha256":"cd6e2ea50f6943ca7271eb8c56a877a5a90720b7047fe9c41a2e541a25773c9b"}
+  ]
+}

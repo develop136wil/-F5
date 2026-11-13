@@ -1,0 +1,44 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+const {chromium}=createRequire(import.meta.url)(process.env.PLAYWRIGHT_MODULE||'playwright');
+test('부분 적용·완료 후 카드와 적용 취소를 유지한다',async()=>{
+ const browser=await chromium.launch({channel:'msedge',headless:true});
+ try {
+  const page=await browser.newPage({viewport:{width:1280,height:900}});
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  page.on('dialog',d=>d.accept());
+  await page.route('**/*',r=>new URL(r.request().url()).hostname==='127.0.0.1'&&!new URL(r.request().url()).pathname.startsWith('/api/')?r.continue():r.abort());
+  await page.goto('http://127.0.0.1:1420/tests/ui/policy-review.html?mode=undo');
+  const card=page.locator('#policy-review-1');
+  await card.locator('button[aria-controls="policy-detail-1"]').click();
+  await card.getByRole('button',{name:'바로 적용',exact:true}).click();
+  await card.getByText('반영 완료 1개',{exact:true}).waitFor();
+  assert.ok(await card.isVisible());
+  await card.getByText('사소한 변경 1개',{exact:true}).click();
+  await card.getByRole('button',{name:'바로 적용',exact:true}).click();
+  await card.getByText('반영 완료',{exact:true}).waitFor();
+  await card.getByText('반영 완료 2개',{exact:true}).click();
+  await card.getByRole('button',{name:'적용 취소',exact:true}).first().click();
+  const dialog=page.getByRole('dialog',{name:'적용 전 내용으로 되돌리기'});
+  await dialog.waitFor();
+  await dialog.getByRole('heading',{name:'되돌릴 내용',exact:true}).waitFor();
+  await page.screenshot({path:'../artifacts/policy-undo-dialog-light.png'});
+  await page.setViewportSize({width:390,height:800});
+  assert.ok(await dialog.evaluate(e=>e.scrollWidth<=e.clientWidth));
+  await page.screenshot({path:'../artifacts/policy-undo-dialog-narrow.png'});
+  await page.keyboard.press('Escape');
+  await dialog.waitFor({state:'detached'});
+  assert.ok(await card.isVisible());
+  await page.setViewportSize({width:1280,height:900});
+  await card.getByRole('button',{name:'적용 취소',exact:true}).first().click();
+  await page.getByRole('button',{name:'적용 취소하기',exact:true}).click();
+  await card.getByRole('button',{name:'바로 적용',exact:true}).waitFor();
+  assert.ok(await card.isVisible());
+  await card.getByRole('button',{name:'바로 적용',exact:true}).click();
+  await card.getByText('반영 완료',{exact:true}).waitFor();
+  assert.equal(await card.getByRole('button',{name:'완료한 카드 정리',exact:true}).count(),0);
+  assert.ok(await card.isVisible(),'완료 이후에도 복구 기록과 취소 진입점을 유지');
+  assert.deepEqual(errors,[]);
+ } finally {await browser.close();}
+});

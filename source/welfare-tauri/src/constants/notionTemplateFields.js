@@ -1,0 +1,17 @@
+export const NOTION_POLICY_TEMPLATE_FIELDS = [
+    { name: '사업명', type: '제목' },
+    { name: '분류', type: '선택' },
+    { name: '거주지', type: '다중 선택' },
+    { name: '대상 특성', type: '다중 선택' },
+    { name: '생애주기', type: '다중 선택' },
+    { name: '시작 월령(개월)', type: '숫자' },
+    { name: '종료 월령(개월)', type: '숫자' },
+    { name: '세부 연령', type: '텍스트' },
+    { name: '대상 소득 수준', type: '텍스트' },
+    { name: '추가 자격요건', type: '텍스트' },
+    { name: '상세 지원 내용', type: '텍스트' },
+    { name: '문의처', type: '텍스트' },
+    { name: '관련 홈페이지 1', type: 'URL' },
+    { name: '관련 홈페이지 2', type: 'URL' },
+    { name: '관련 홈페이지 3', type: 'URL' },
+];

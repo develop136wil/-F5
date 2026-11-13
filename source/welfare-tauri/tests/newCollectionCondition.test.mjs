@@ -1,0 +1,60 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {newCollectionCondition} from '../src/utils/newCollectionCondition.js';
+
+const senior = {name:'노년 복지 소식', life_cycles:['노년'], characteristics:[], interest_topics:['신체건강','주거'], keywords:['노년','노인'], semantic_text:'노년층 돌봄 지원'};
+test('새 대상은 기존 영유아 나이·AI 요청·제외 단어를 상속하지 않는다', () => {
+    const result = newCollectionCondition(senior, [{id:12}, {id:'site-2'}]);
+    assert.equal(result.name, senior.name);
+    assert.equal(result.region, '전국');
+    assert.equal(result.min_age_months, null);
+    assert.equal(result.max_age_months, null);
+    assert.equal(result.ai_prompt, '');
+    assert.deepEqual(result.excluded_keywords, []);
+    assert.equal(result.semantic_text, senior.semantic_text);
+    assert.deepEqual(result.site_ids, ['12','site-2']);
+    assert.deepEqual(result.sources, ['sites']);
+    assert.equal('execution_enabled' in result, false);
+});
+test('추천 조건 원본과 다른 조건의 목록을 변경하지 않는다', () => {
+    const result = newCollectionCondition(senior);
+    result.life_cycles.push('중장년'); result.keywords.push('주거'); result.characteristics.push('장애인');
+    const next = newCollectionCondition(senior);
+    assert.deepEqual(next.life_cycles, ['노년']);
+    assert.deepEqual(next.keywords, ['노년','노인']);
+    assert.deepEqual(next.characteristics, []);
+    assert.deepEqual(next.interest_topics, ['신체건강','주거']);
+});
+test('가구상황 기준에 임의 나이 제한을 넣지 않으며 직접 만들기도 가능하다', () => {
+    const result = newCollectionCondition({name:'한부모·조손', characteristics:['한부모·조손']});
+    assert.deepEqual(result.characteristics, ['한부모·조손']);
+    assert.deepEqual(result.life_cycles, []);
+    assert.deepEqual(result.interest_topics, []);
+    assert.equal(result.max_age_months, null);
+    const custom = newCollectionCondition();
+    assert.ok(custom.name && custom.semantic_text);
+    assert.deepEqual(custom.site_ids, []);
+    assert.deepEqual(custom.sources, ['sites']);
+});
+test('조건 도구는 필요할 때만 열고 저장이 현재 수집을 바꾸지 않음을 표시한다', () => {
+    const read = path => readFileSync(new URL(path, import.meta.url), 'utf8');
+    const settings = read('../src/pages/Settings.jsx');
+    const panel = read('../src/components/NewsProfilesPanel.jsx');
+    const editor = read('../src/components/NewsProfileEditor.jsx');
+    assert.match(settings, /conditionsOpen, setConditionsOpen\] = useState\(false\)/);
+    assert.match(settings, /conditionsLoaded && <div id="collection-conditions" hidden=\{!conditionsOpen\}/);
+    assert.doesNotMatch(settings, /!conditionsOpen && <details/);
+    assert.doesNotMatch(settings, /이전 수집 설정|CUSTOM_AI_PROMPT|welfareApi\.getKeywords/);
+    assert.match(settings, /<DefaultNewsConditionEditor/);
+    assert.doesNotMatch(panel, /captureLegacyNewsProfile|현재 설정을 기본 프로필로 보관/);
+    assert.match(panel, /기본 수집 조건과 예약은 바뀌지 않습니다/);
+    assert.match(panel, /새 조건 만들기/);
+    assert.doesNotMatch(panel, /taxonomy\?\.presets|setCreating\(preset\)|조건 추가/);
+    assert.match(panel, /<NewsConditionWizard/);
+    assert.match(panel, /!p\.protected && p\.execution_enabled/);
+    assert.match(panel, />수집 진행<\/button>/);
+    assert.match(editor, /if \(!initialTaxonomy\) welfareApi.getNewsProfileTaxonomy/);
+    assert.match(editor, /대상이 바뀌었습니다/);
+    assert.match(editor, /<details[^>]*aria-label="AI 분석 기준 확인"/);
+});

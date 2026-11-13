@@ -1,0 +1,42 @@
+{
+  "version": "search-quality-smoke-v1",
+  "description": "대표 대상별 검색 누락과 순위 역전을 찾는 스모크 기준입니다. 사람 검수 정확도나 지원 자격 판정률이 아닙니다.",
+  "cases": [
+    {
+      "id": "infant_childcare",
+      "query": "영아 양육비와 보육료 지원",
+      "required_any": ["영아", "아기", "보육", "양육", "유아"],
+      "expected_categories": ["교육/보육", "돌봄/양육", "가족지원"]
+    },
+    {
+      "id": "single_parent_living",
+      "query": "한부모 가정 생활비 지원",
+      "required_any": ["한부모"],
+      "expected_categories": ["가족지원", "생활지원", "복지"]
+    },
+    {
+      "id": "elderly_care",
+      "query": "노인 돌봄 서비스",
+      "required_any": ["노인", "어르신", "고령", "노년"],
+      "expected_categories": ["돌봄/양육", "복지", "생활지원"]
+    },
+    {
+      "id": "youth_education",
+      "query": "청소년 교육비 지원",
+      "required_any": ["청소년", "학생", "교육비", "학령기"],
+      "expected_categories": ["교육/보육", "생활지원", "복지"]
+    },
+    {
+      "id": "disability_rehabilitation",
+      "query": "장애인 재활 지원",
+      "required_any": ["장애", "재활", "발달지연"],
+      "expected_categories": ["의료/재활", "복지", "생활지원"]
+    },
+    {
+      "id": "pregnancy_birth",
+      "query": "임산부 출산 지원",
+      "required_any": ["임산부", "임신", "출산", "산모"],
+      "expected_categories": ["의료/재활", "가족지원", "생활지원"]
+    }
+  ]
+}

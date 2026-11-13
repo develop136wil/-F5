@@ -1,0 +1,17 @@
+<!doctype html><html lang="ko"><head><meta charset="UTF-8"><title>연결 지연 격리 검사</title></head><body><div id="root"></div>
+<script>
+window.__TAURI__ = {};
+window.connectionFixture = { next: { phase: 'ready', busy: false }, calls: [], mounts: 0, saves: 0, callbacks: {}, events: {} };
+window.__TAURI_INTERNALS__ = {
+    transformCallback(callback) { const id = Object.keys(connectionFixture.callbacks).length + 1; connectionFixture.callbacks[id] = callback; return id; },
+    unregisterCallback() {},
+    async invoke(name, args) {
+        const f = connectionFixture; f.calls.push(name);
+        if (name === 'desktop_status') return { ...f.next };
+        if (name === 'plugin:event|listen') { f.events[args.event] = args.handler; return 1; }
+        if (['plugin:event|unlisten', 'desktop_close_ack'].includes(name)) return;
+        if (name === 'desktop_shutdown') { f.next = { phase: 'ready', shutdown_requested: true }; return; }
+        throw new Error('Unexpected IPC: ' + name);
+    }
+};
+</script><script type="module" src="/tests/ui/desktop-connection.jsx"></script></body></html>

@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const read=p=>readFileSync(new URL(p,import.meta.url),'utf8');
+test('실행 버튼 옆에 갱신 아이콘과 hover/focus 설명을 제공한다',()=>{
+    const run=read('../src/components/NewsProfileRunPanel.jsx');
+    assert.match(run,/border-t border-gray-100 pt-4 dark:border-gray-700/);
+    assert.match(run,/sm:w-1\/2 sm:flex-none/);
+    assert.match(run,/flex h-14 w-14 items-center/);
+    assert.match(run,/rounded-lg border border-gray-200 text-gray-500/);
+    assert.match(run,/dark:border-gray-700 dark:text-gray-400/);
+    assert.doesNotMatch(run,/확인할 기관 사이트|options.selection.sites.map/);
+    assert.match(run,/options\?\.selection&&<dl/);
+    assert.match(run,/rounded-xl bg-gray-50 p-4/);
+    for (const label of ['지역','대상','나이','확인할 곳']) assert.ok(run.includes(`${label}</dt>`));
+    assert.ok(run.indexOf('{conditionActions&&') < run.indexOf("primaryLabel ? 'border-t"));
+    assert.match(run,/aria-label="상태 새로고침" disabled=\{busy\|\|actionBusy\}/);
+    assert.match(run,/group-hover:opacity-100 group-focus-within:opacity-100/);
+    assert.match(run,/refreshing\?'animate-spin motion-reduce:animate-none'/);
+    assert.doesNotMatch(run,/남은 자료를 자동으로 계속 분석합니다/);
+    assert.match(run,/onClick=\{\(\) => confirmStart/);
+});
+test('범위 설정과 조건 선택을 기본 수집 카드 안으로 전달한다',()=>{
+    const page=read('../src/pages/NotionUpload.jsx');
+    const panel=read('../src/components/NewsCollectionPanel.jsx');
+    assert.match(page,/<NewsCollectionPanel[^\n]*conditionActions=\{<NewsTargetCollection/);
+    assert.ok(page.indexOf('Notion 연결 도움말') < page.indexOf('onClick={handleVerify}'));
+    assert.ok(page.indexOf('onClick={handleVerify}') < page.indexOf('onClick={handleUpload}'));
+    assert.match(panel,/<NewsProfileRunPanel[^\n]*conditionActions=/);
+    assert.match(panel,/수집 범위·기간 설정<\/Link>\{conditionActions\}/);
+    assert.match(panel,/<Link to="\/sites"[^>]*>수집 사이트 등록·관리<\/Link>/);
+    assert.match(panel,/onResults=\{\(\)=>onResults\?\.\(condition.data.profile.profile_id,condition.data.profile.name\)\}/);
+    assert.doesNotMatch(panel, /<NewsProfileResults/);
+});
